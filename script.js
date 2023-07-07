@@ -69,3 +69,29 @@ function showAnswer() {
     document.getElementById("answer_3_Id").innerHTML = question['answer_3'];
     document.getElementById("answer_4_Id").innerHTML = question['answer_4'];
 }
+
+function answer(selection) {
+    let question = questions[currentQuestion];
+    console.log('Selected answer is', selection)
+    let selectedQuestionNumber = selection.slice(-1);
+    console.log('selectedQuestionNumber is', selectedQuestionNumber);
+    console.log('Current question is', question['right_answer']);
+
+    if(selectedQuestionNumber == question['right_answer']) {
+        console.log('Richtige Antwort!');
+    } else {
+        console.log('Falsche Antwort!');
+    }
+}
+
+/*function answer(selection) {
+    let question = questions[currentQuestion];
+    rightAnswer = questions[right_answer]
+    if (selection == rightAnswer) {
+        return "Richtig"
+    }else {
+        return "Falsch"
+    }
+
+}
+*/
