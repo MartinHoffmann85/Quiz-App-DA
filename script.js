@@ -44,3 +44,28 @@ let questions = [
         "right_answer": 3
     },
 ];
+
+let currentQuestion = 0;
+
+function init() {
+    generateQuestionCounter();
+    showQuestion();
+    showAnswer();
+}
+
+function generateQuestionCounter() {
+   document.getElementById("questionCounterId").innerHTML = questions.length;    
+}
+
+function showQuestion() {
+    let question = questions[currentQuestion];
+    document.getElementById("questionTextId").innerHTML = question['question'];
+}
+
+function showAnswer() {
+    let question = questions[currentQuestion];
+    document.getElementById("answer_1_Id").innerHTML = question['answer_1'];
+    document.getElementById("answer_2_Id").innerHTML = question['answer_2'];
+    document.getElementById("answer_3_Id").innerHTML = question['answer_3'];
+    document.getElementById("answer_4_Id").innerHTML = question['answer_4'];
+}

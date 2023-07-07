@@ -26,7 +26,7 @@
 
 </head>
 
-<body>
+<body onload="init()">
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">
@@ -40,35 +40,35 @@
         <div class="card quizCard">
             <img src="./img/fragezeichen-zeichen-led-licht-illustration.jpg" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title">Frage</h5>
+              <h5 class="card-title" id="questionTextId">Frage</h5>
 
-                <div class="card mb-2">
-                  <div class="card-body">
+                <div class="card mb-2 quizAnswerCard">
+                  <div class="card-body" id="answer_1_Id">
                     Antwort
                   </div>
                 </div>
 
-                <div class="card mb-2">
-                  <div class="card-body">
+                <div class="card mb-2 quizAnswerCard">
+                  <div class="card-body" id="answer_2_Id">
                     Antwort
                   </div>
                 </div>
 
-                <div class="card mb-2">
-                  <div class="card-body">
+                <div class="card mb-2 quizAnswerCard">
+                  <div class="card-body" id="answer_3_Id">
                     Antwort
                   </div>
                 </div>
 
-                <div class="card mb-2">
-                  <div class="card-body">
+                <div class="card mb-2 quizAnswerCard">
+                  <div class="card-body" id="answer_4_Id">
                     Antwort
                   </div>
                 </div>
 
                 <div class="questionFutter">
                   <span>
-                    <b>1</b> von <b>5</b>
+                    <b>1</b> von <b id="questionCounterId"></b>
                   </span>
                   
 
