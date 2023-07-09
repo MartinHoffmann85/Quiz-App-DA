@@ -70,6 +70,8 @@ function generateCurrentQuestionCounter() {
 function showQuestion() {
     if (CurrentQuestionCounter >= questions.length) {
         // Todo show end screen
+        document.getElementById('endScreenId').style = '';
+        document.getElementById('questionBodyId').style = 'display: none';
     } else {
         question = questions[currentQuestion];
         document.getElementById("questionTextId").innerHTML = question['question'];

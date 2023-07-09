@@ -39,7 +39,12 @@
       <div class="container">
         <div class="card quizCard">
             <img src="./img/fragezeichen-zeichen-led-licht-illustration.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
+
+            <div class="card-body" id="endScreenId" style="display: none;">
+              Quiz beendet!
+            </div>
+
+            <div class="card-body" id="questionBodyId">
               <h5 class="card-title" id="questionTextId">Frage</h5>
 
                 <div class="card mb-2 quizAnswerCard" onclick="answer('answer_1')">
