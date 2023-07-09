@@ -22,10 +22,6 @@ body {
     padding-top: 10px;
 }
 
-#questionCounterId {
-
-}
-
 .quizAnswerCard:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.05);
@@ -37,4 +33,9 @@ body {
 
 .widh100 {
     width: 100%;
+}
+
+.finalHeadLine {
+    font-size: 38px;
+    margin-bottom: 32px;
 }

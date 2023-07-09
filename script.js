@@ -52,6 +52,8 @@ let question = 0;
 let CurrentQuestionCounter = 1;
 let rightGivenAnswers = 0;
 
+
+
 function init() {
     generateQuestionCounter();
     showQuestion();
@@ -67,19 +69,22 @@ function generateCurrentQuestionCounter() {
     CurrentQuestionCounter++;
  }
 
-
 function showQuestion() {
     if (CurrentQuestionCounter >= questions.length) {
-        // Todo show end screen
+        // Show end screen
         document.getElementById('endScreenId').style = '';
         document.getElementById('questionBodyId').style = 'display: none';
         document.getElementById('QuestionMarkImgId').style = 'display: none';
         document.getElementById('rightAnswersCounterId').innerHTML = `
             Du hast <b>${rightGivenAnswers}</b> Fragen von <b>${questions.length}</b> Richtig beantwortet.
         `
-    } else {
+    } else { // Show question
         question = questions[currentQuestion];
         document.getElementById("questionTextId").innerHTML = question['question'];
+        let percent = currentQuestion / questions.length;
+        percent = Math.round(percent * 100);
+        document.getElementById('progressBarId').innerHTML = `${percent} %`;
+        document.getElementById('progressBarId').style.width = `${percent}%`;
     }
         
 }
