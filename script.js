@@ -50,6 +50,7 @@ let selectedAnswer;
 let selectedIdOfRightAnswer;
 let question = 0;
 let CurrentQuestionCounter = 1;
+let rightGivenAnswers = 0;
 
 function init() {
     generateQuestionCounter();
@@ -72,6 +73,10 @@ function showQuestion() {
         // Todo show end screen
         document.getElementById('endScreenId').style = '';
         document.getElementById('questionBodyId').style = 'display: none';
+        document.getElementById('QuestionMarkImgId').style = 'display: none';
+        document.getElementById('rightAnswersCounterId').innerHTML = `
+            Du hast <b>${rightGivenAnswers}</b> Fragen von <b>${questions.length}</b> Richtig beantwortet.
+        `
     } else {
         question = questions[currentQuestion];
         document.getElementById("questionTextId").innerHTML = question['question'];
@@ -97,6 +102,7 @@ function answer(selection) {
     if(selectedQuestionNumber == question['right_answer']) {
         console.log('Richtige Antwort!');        
         document.getElementById(selection + "_Id").parentNode.classList.add('bg-success');
+        rightGivenAnswers++;
     } else {
         console.log('Falsche Antwort!');
         document.getElementById(selection + "_Id").parentNode.classList.add('bg-danger');
