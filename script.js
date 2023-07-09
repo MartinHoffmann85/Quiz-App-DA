@@ -46,6 +46,10 @@ let questions = [
 ];
 
 let currentQuestion = 0;
+let selectedAnswer;
+let selectedIdOfRightAnswer;
+let question = 0;
+let CurrentQuestionCounter = 1;
 
 function init() {
     generateQuestionCounter();
@@ -54,16 +58,27 @@ function init() {
 }
 
 function generateQuestionCounter() {
-   document.getElementById("questionCounterId").innerHTML = questions.length;    
+   document.getElementById("questionCounterId").innerHTML = questions.length;
+   document.getElementById("CurrentQuestionCounterId").innerHTML = CurrentQuestionCounter;
 }
 
+function generateCurrentQuestionCounter() {
+    CurrentQuestionCounter++;
+ }
+
+
 function showQuestion() {
-    let question = questions[currentQuestion];
-    document.getElementById("questionTextId").innerHTML = question['question'];
+    if (CurrentQuestionCounter >= questions.length) {
+        // Todo show end screen
+    } else {
+        question = questions[currentQuestion];
+        document.getElementById("questionTextId").innerHTML = question['question'];
+    }
+        
 }
 
 function showAnswer() {
-    let question = questions[currentQuestion];
+    question = questions[currentQuestion];
     document.getElementById("answer_1_Id").innerHTML = question['answer_1'];
     document.getElementById("answer_2_Id").innerHTML = question['answer_2'];
     document.getElementById("answer_3_Id").innerHTML = question['answer_3'];
@@ -71,27 +86,34 @@ function showAnswer() {
 }
 
 function answer(selection) {
-    let question = questions[currentQuestion];
-    console.log('Selected answer is', selection)
+    let question = questions[currentQuestion]; 
     let selectedQuestionNumber = selection.slice(-1);
-    console.log('selectedQuestionNumber is', selectedQuestionNumber);
-    console.log('Current question is', question['right_answer']);
-
+    let idOfRightAnswer = `${question['right_answer']}`;
+    selectedAnswer = selection
+    selectedIdOfRightAnswer = idOfRightAnswer;
+      
     if(selectedQuestionNumber == question['right_answer']) {
-        console.log('Richtige Antwort!');
+        console.log('Richtige Antwort!');        
+        document.getElementById(selection + "_Id").parentNode.classList.add('bg-success');
     } else {
         console.log('Falsche Antwort!');
+        document.getElementById(selection + "_Id").parentNode.classList.add('bg-danger');
+        document.getElementById("answer_" + idOfRightAnswer + "_Id").parentNode.classList.add('bg-success');
     }
+    document.getElementById('next-button-Id').disabled = false;    
 }
 
-/*function answer(selection) {
-    let question = questions[currentQuestion];
-    rightAnswer = questions[right_answer]
-    if (selection == rightAnswer) {
-        return "Richtig"
-    }else {
-        return "Falsch"
-    }
-
+function nextQuestion() {
+    currentQuestion++;
+    question++;
+    selection = selectedAnswer;
+    idOfRightAnswer = selectedIdOfRightAnswer;   
+    showQuestion();
+    document.getElementById('next-button-Id').disabled = true;    
+    document.getElementById(selection + "_Id").parentNode.classList.remove('bg-danger');    
+    document.getElementById("answer_" + idOfRightAnswer + "_Id").parentNode.classList.remove('bg-success');
+    showAnswer();
+    generateCurrentQuestionCounter();
+    generateQuestionCounter();
 }
-*/
+
