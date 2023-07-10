@@ -49,10 +49,14 @@
               <div class="progress-bar" id="progressBarId" style="width: 0%"></div>
             </div>
 
-            <div class="textCenter finalHeadLine">Quiz beendet!</div>
+            <div class="textCenter finalHeadLine" id="quizEndTextId" style="display: none;">Quiz beendet!</div>
 
             <div class="textCenter" id="rightAnswersCounterId">
               
+            </div>
+
+            <div class="buttonRow">
+              <button type="button" class="btn btn-primary" id="restartGameButtonId" style="display: none;" onclick="restartGame()">Erneut Spielen</button>
             </div>
 
             <div class="card-body" id="questionBodyId">
@@ -90,18 +94,9 @@
 
                   <button type="button" class="btn btn-primary" id="next-button-Id" disabled onclick="nextQuestion()">Nächste Frage</button>
                 </div>
-
-
-
             </div>
           </div>
-      </div>
-
-
-
-
-
-    
+      </div>    
 </body>
 
 </html>

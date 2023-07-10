@@ -51,6 +51,7 @@ let selectedIdOfRightAnswer;
 let question = 0;
 let CurrentQuestionCounter = 1;
 let rightGivenAnswers = 0;
+let idOfRightAnswer = `${questions['right_answer']}`;
 
 
 
@@ -69,24 +70,24 @@ function generateCurrentQuestionCounter() {
     CurrentQuestionCounter++;
  }
 
-function showQuestion() {
-    if (CurrentQuestionCounter >= questions.length) {
+ function showQuestion() {
+    if (currentQuestion >= questions.length) {
         // Show end screen
         document.getElementById('endScreenId').style = '';
         document.getElementById('questionBodyId').style = 'display: none';
         document.getElementById('QuestionMarkImgId').style = 'display: none';
         document.getElementById('rightAnswersCounterId').innerHTML = `
-            Du hast <b>${rightGivenAnswers}</b> Fragen von <b>${questions.length}</b> Richtig beantwortet.
-        `
+            Du hast <b>${rightGivenAnswers}</b> Fragen von <b>${questions.length}</b> richtig beantwortet.
+        `;
+        document.getElementById('restartGameButtonId').style = '';
     } else { // Show question
         question = questions[currentQuestion];
         document.getElementById("questionTextId").innerHTML = question['question'];
-        let percent = currentQuestion / questions.length;
+        let percent = (currentQuestion + 1) / questions.length;
         percent = Math.round(percent * 100);
         document.getElementById('progressBarId').innerHTML = `${percent} %`;
         document.getElementById('progressBarId').style.width = `${percent}%`;
     }
-        
 }
 
 function showAnswer() {
@@ -100,7 +101,7 @@ function showAnswer() {
 function answer(selection) {
     let question = questions[currentQuestion]; 
     let selectedQuestionNumber = selection.slice(-1);
-    let idOfRightAnswer = `${question['right_answer']}`;
+    idOfRightAnswer = `${question['right_answer']}`;
     selectedAnswer = selection
     selectedIdOfRightAnswer = idOfRightAnswer;
       
@@ -117,16 +118,53 @@ function answer(selection) {
 }
 
 function nextQuestion() {
-    currentQuestion++;
-    question++;
-    selection = selectedAnswer;
-    idOfRightAnswer = selectedIdOfRightAnswer;   
-    showQuestion();
-    document.getElementById('next-button-Id').disabled = true;    
-    document.getElementById(selection + "_Id").parentNode.classList.remove('bg-danger');    
-    document.getElementById("answer_" + idOfRightAnswer + "_Id").parentNode.classList.remove('bg-success');
-    showAnswer();
-    generateCurrentQuestionCounter();
-    generateQuestionCounter();
+    if (CurrentQuestionCounter == 5) {
+        // Alle Fragen beantwortet
+        document.getElementById('next-button-Id').disabled = true;
+        document.getElementById('restartGameButtonId').style.display = 'block';
+        document.getElementById('quizEndTextId').style.display = `block`;
+        document.getElementById('questionBodyId').style.display = `none`;
+        document.getElementById('rightAnswersCounterId').style = `block`;
+        document.getElementById('rightAnswersCounterId').innerHTML = `
+            Du hast <b>${rightGivenAnswers}</b> Fragen von <b>${questions.length}</b> richtig beantwortet.
+        `;
+        document.getElementById('endScreenId').style = '';
+        document.getElementById('QuestionMarkImgId').style = 'display: none';
+    } else {
+        currentQuestion++;
+        question++;
+        selection = selectedAnswer;
+        idOfRightAnswer = selectedIdOfRightAnswer;
+        showQuestion();
+        document.getElementById('next-button-Id').disabled = true;
+        document.getElementById(selection + "_Id").parentNode.classList.remove('bg-danger');
+        document.getElementById("answer_" + idOfRightAnswer + "_Id").parentNode.classList.remove('bg-success');
+        showAnswer();
+        generateCurrentQuestionCounter();
+        generateQuestionCounter();
+    }
 }
 
+function restartGame() {
+    document.getElementById('endScreenId').style = 'display: none';
+    document.getElementById('QuestionMarkImgId').style = '';
+    document.getElementById('restartGameButtonId').style = 'display: none';
+    document.getElementById('next-button-Id').disabled = false;
+    document.getElementById('quizEndTextId').style = `display: none`;
+    document.getElementById('rightAnswersCounterId').style = `display: none`;
+    document.getElementById('questionBodyId').style.display = `block`;
+    document.getElementById(selection + "_Id").parentNode.classList.remove('bg-danger');
+    document.getElementById("answer_" + idOfRightAnswer + "_Id").parentNode.classList.remove('bg-success');
+    document.getElementById('next-button-Id').disabled = true;
+    document.getElementById('rightAnswersCounterId').innerHTML = `
+            Du hast <b>${rightGivenAnswers}</b> Fragen von <b>${questions.length}</b> richtig beantwortet.
+        `;
+
+    currentQuestion = 0;
+    selectedAnswer;
+    selectedIdOfRightAnswer;
+    question = 0;
+    CurrentQuestionCounter = 1;
+    rightGivenAnswers = 0;    
+    init();
+}
