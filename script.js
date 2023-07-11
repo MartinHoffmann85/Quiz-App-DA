@@ -52,6 +52,9 @@ let question = 0;
 let CurrentQuestionCounter = 1;
 let rightGivenAnswers = 0;
 let idOfRightAnswer = `${questions['right_answer']}`;
+let audioSuccess = new Audio('./audio/short-success-sound-glockenspiel-treasure-video-game-6346.mp3')
+let audioWrong = new Audio('./audio/game-fx-9-40197.mp3')
+let audioTrophy = new Audio('./audio/success-fanfare-trumpets-6185.mp3')
 
 
 
@@ -73,21 +76,29 @@ function generateCurrentQuestionCounter() {
  function showQuestion() {
     if (currentQuestion >= questions.length) {
         // Show end screen
-        document.getElementById('endScreenId').style = '';
-        document.getElementById('questionBodyId').style = 'display: none';
-        document.getElementById('QuestionMarkImgId').style = 'display: none';
-        document.getElementById('rightAnswersCounterId').innerHTML = `
+        showEndScreen();
+    } else { // Show question
+        showNextQuestion();
+    }
+}
+
+function showNextQuestion() {
+    question = questions[currentQuestion];
+    document.getElementById("questionTextId").innerHTML = question['question'];
+    let percent = (currentQuestion + 1) / questions.length;
+    percent = Math.round(percent * 100);
+    document.getElementById('progressBarId').innerHTML = `${percent} %`;
+    document.getElementById('progressBarId').style.width = `${percent}%`;
+}
+
+function showEndScreen() {
+    document.getElementById('endScreenId').style = '';
+    document.getElementById('questionBodyId').style = 'display: none';
+    document.getElementById('QuestionMarkImgId').style = 'display: none';
+    document.getElementById('rightAnswersCounterId').innerHTML = `
             Du hast <b>${rightGivenAnswers}</b> Fragen von <b>${questions.length}</b> richtig beantwortet.
         `;
-        document.getElementById('restartGameButtonId').style = '';
-    } else { // Show question
-        question = questions[currentQuestion];
-        document.getElementById("questionTextId").innerHTML = question['question'];
-        let percent = (currentQuestion + 1) / questions.length;
-        percent = Math.round(percent * 100);
-        document.getElementById('progressBarId').innerHTML = `${percent} %`;
-        document.getElementById('progressBarId').style.width = `${percent}%`;
-    }
+    document.getElementById('restartGameButtonId').style = '';
 }
 
 function showAnswer() {
@@ -106,46 +117,76 @@ function answer(selection) {
     selectedIdOfRightAnswer = idOfRightAnswer;
       
     if(selectedQuestionNumber == question['right_answer']) {
-        console.log('Richtige Antwort!');        
-        document.getElementById(selection + "_Id").parentNode.classList.add('bg-success');
-        rightGivenAnswers++;
+        rightAnswer(selection);
     } else {
-        console.log('Falsche Antwort!');
-        document.getElementById(selection + "_Id").parentNode.classList.add('bg-danger');
-        document.getElementById("answer_" + idOfRightAnswer + "_Id").parentNode.classList.add('bg-success');
+        wrongAnswer(selection);
     }
     document.getElementById('next-button-Id').disabled = false;    
+}
+
+function wrongAnswer(selection) {
+    console.log('Falsche Antwort!');
+    document.getElementById(selection + "_Id").parentNode.classList.add('bg-danger');
+    document.getElementById("answer_" + idOfRightAnswer + "_Id").parentNode.classList.add('bg-success');
+    audioWrong.play();
+}
+
+function rightAnswer(selection) {
+    console.log('Richtige Antwort!');
+    document.getElementById(selection + "_Id").parentNode.classList.add('bg-success');
+    rightGivenAnswers++;
+    audioSuccess.play();
 }
 
 function nextQuestion() {
     if (CurrentQuestionCounter == 5) {
         // Alle Fragen beantwortet
-        document.getElementById('next-button-Id').disabled = true;
-        document.getElementById('restartGameButtonId').style.display = 'block';
-        document.getElementById('quizEndTextId').style.display = `block`;
-        document.getElementById('questionBodyId').style.display = `none`;
-        document.getElementById('rightAnswersCounterId').style = `block`;
-        document.getElementById('rightAnswersCounterId').innerHTML = `
-            Du hast <b>${rightGivenAnswers}</b> Fragen von <b>${questions.length}</b> richtig beantwortet.
-        `;
-        document.getElementById('endScreenId').style = '';
-        document.getElementById('QuestionMarkImgId').style = 'display: none';
+        allQuestionsDone();
     } else {
-        currentQuestion++;
-        question++;
-        selection = selectedAnswer;
-        idOfRightAnswer = selectedIdOfRightAnswer;
-        showQuestion();
-        document.getElementById('next-button-Id').disabled = true;
-        document.getElementById(selection + "_Id").parentNode.classList.remove('bg-danger');
-        document.getElementById("answer_" + idOfRightAnswer + "_Id").parentNode.classList.remove('bg-success');
-        showAnswer();
-        generateCurrentQuestionCounter();
-        generateQuestionCounter();
+        generateNextQuestion();
     }
 }
 
+function generateNextQuestion() {
+    currentQuestion++;
+    question++;
+    selection = selectedAnswer;
+    idOfRightAnswer = selectedIdOfRightAnswer;
+    showQuestion();
+    document.getElementById('next-button-Id').disabled = true;
+    document.getElementById(selection + "_Id").parentNode.classList.remove('bg-danger');
+    document.getElementById("answer_" + idOfRightAnswer + "_Id").parentNode.classList.remove('bg-success');
+    showAnswer();
+    generateCurrentQuestionCounter();
+    generateQuestionCounter();
+}
+
+function allQuestionsDone() {
+    document.getElementById('next-button-Id').disabled = true;
+    document.getElementById('restartGameButtonId').style.display = 'block';
+    document.getElementById('quizEndTextId').style.display = `block`;
+    document.getElementById('questionBodyId').style.display = `none`;
+    document.getElementById('rightAnswersCounterId').style = `block`;
+    document.getElementById('rightAnswersCounterId').innerHTML = `
+            Du hast <b>${rightGivenAnswers}</b> Fragen von <b>${questions.length}</b> richtig beantwortet.
+        `;
+    document.getElementById('endScreenId').style = '';
+    document.getElementById('QuestionMarkImgId').style = 'display: none';
+    audioTrophy.play();
+}
+
 function restartGame() {
+    currentQuestion = 0;
+    selectedAnswer;
+    selectedIdOfRightAnswer;
+    question = 0;
+    CurrentQuestionCounter = 1;
+    rightGivenAnswers = 0;
+    init();
+    generateRestartGameHTML();
+}
+
+function generateRestartGameHTML() {
     document.getElementById('endScreenId').style = 'display: none';
     document.getElementById('QuestionMarkImgId').style = '';
     document.getElementById('restartGameButtonId').style = 'display: none';
@@ -159,12 +200,4 @@ function restartGame() {
     document.getElementById('rightAnswersCounterId').innerHTML = `
             Du hast <b>${rightGivenAnswers}</b> Fragen von <b>${questions.length}</b> richtig beantwortet.
         `;
-
-    currentQuestion = 0;
-    selectedAnswer;
-    selectedIdOfRightAnswer;
-    question = 0;
-    CurrentQuestionCounter = 1;
-    rightGivenAnswers = 0;    
-    init();
 }
